@@ -58,3 +58,70 @@ func Test_checkLevel(t *testing.T) {
 		})
 	}
 }
+
+func Test_checkLevelsWithRetry(t *testing.T) {
+
+	tests := []struct {
+		name    string
+		levels  []int
+		wantErr bool
+	}{
+		{
+			name:    "ascending",
+			levels:  []int{1, 2, 3},
+			wantErr: false,
+		},
+		{
+			name:    "descending",
+			levels:  []int{3, 2, 1},
+			wantErr: false,
+		},
+		{
+			name:    "stops ascending",
+			levels:  []int{1, 2, 3, 3},
+			wantErr: false,
+		},
+		{
+			name:    "stops ascending but unrecoverable",
+			levels:  []int{1, 2, 3, 3, 3},
+			wantErr: true,
+		},
+		{
+			name:    "example 1",
+			levels:  []int{7, 6, 4, 2, 1},
+			wantErr: false,
+		},
+		{
+			name:    "example 2",
+			levels:  []int{1, 2, 7, 8, 9},
+			wantErr: true,
+		},
+		{
+			name:    "example 3",
+			levels:  []int{9, 7, 6, 2, 1},
+			wantErr: true,
+		},
+		{
+			name:    "example 4",
+			levels:  []int{1, 3, 2, 4, 5},
+			wantErr: false,
+		},
+		{
+			name:    "example 5",
+			levels:  []int{8, 6, 4, 4, 1},
+			wantErr: false,
+		},
+		{
+			name:    "example 6",
+			levels:  []int{1, 3, 6, 7, 9},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := checkLevelsWithRetry(tt.levels); (err != nil) != tt.wantErr {
+				t.Errorf("checkLevelsWithRetry() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

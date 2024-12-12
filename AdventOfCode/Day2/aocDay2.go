@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -12,23 +13,65 @@ import (
 func main() {
 	levels := preProcess()
 	accumulator := 0
+	accumulatorWithRetry := 0
 	for _, level := range levels {
 		problem := checkLevel(level)
 		if problem == -1 {
 			accumulator++
 		}
+
+		err := checkLevelsWithRetry(level)
+		if err == nil {
+			accumulatorWithRetry++
+		}
 	}
-	fmt.Println(accumulator)
+	fmt.Printf("Without buffer: %d\n", accumulator)
+	fmt.Printf("With buffer: %d\n", accumulatorWithRetry)
 }
 
-func checkLevelsWithRetry(levels []int) int {
+func checkLevelsWithRetry(levels []int) error {
 	problem := checkLevel(levels)
 
 	if problem == -1 {
-		return problem
+		return nil
 	}
-	a := append(levels[0:problem-1], levels[problem-1:]...)
-	return true
+	a, b, c := make([]int, len(levels)-1), make([]int, len(levels)-1), make([]int, len(levels)-1)
+
+	if problem != 0 {
+		i := 0
+		for ; i < problem-1; i++ {
+			a[i] = levels[i]
+		}
+		for ; i < len(a); i++ {
+			a[i] = levels[i+1]
+		}
+		if checkLevel(a) == -1 {
+			return nil
+		}
+	}
+	i := 0
+	for ; i < problem; i++ {
+		b[i] = levels[i]
+	}
+	for ; i < len(a); i++ {
+		b[i] = levels[i+1]
+	}
+	if checkLevel(b) == -1 {
+		return nil
+	}
+	if problem != len(levels)-1 {
+		i := 0
+		for ; i < problem+1; i++ {
+			c[i] = levels[i]
+		}
+		for ; i < len(a); i++ {
+			c[i] = levels[i+1]
+		}
+		if checkLevel(c) == -1 {
+			return nil
+		}
+	}
+	return errors.New("unable to solve this level with retry")
 }
 
 // checkLevel returns the index of the problem
