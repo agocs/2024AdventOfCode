@@ -125,3 +125,22 @@ func Test_checkLevelsWithRetry(t *testing.T) {
 		})
 	}
 }
+
+func Test_rebuildLevel(t *testing.T) {
+	source := []int{1, 2, 3}
+	dest := make([]int, 2)
+	rebuildLevel(&source, &dest, 1)
+	if dest[0] != 1 || dest[1] != 3 {
+		t.Errorf("rebuildLevel() = %v", dest)
+	}
+
+	rebuildLevel(&source, &dest, 0)
+	if dest[0] != 2 || dest[1] != 3 {
+		t.Errorf("rebuildLevel() = %v", dest)
+	}
+
+	rebuildLevel(&source, &dest, 2)
+	if dest[0] != 1 || dest[1] != 2 {
+		t.Errorf("rebuildLevel() = %v", dest)
+	}
+}

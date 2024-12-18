@@ -35,43 +35,29 @@ func checkLevelsWithRetry(levels []int) error {
 	if problem == -1 {
 		return nil
 	}
-	a, b, c := make([]int, len(levels)-1), make([]int, len(levels)-1), make([]int, len(levels)-1)
 
-	if problem != 0 {
-		i := 0
-		for ; i < problem-1; i++ {
-			a[i] = levels[i]
-		}
-		for ; i < len(a); i++ {
-			a[i] = levels[i+1]
-		}
-		if checkLevel(a) == -1 {
+	dest := make([]int, len(levels)-1)
+
+	for i, _ := range dest {
+		rebuildLevel(&levels, &dest, i)
+		problem = checkLevel(dest)
+		if problem == -1 {
 			return nil
 		}
 	}
-	i := 0
-	for ; i < problem; i++ {
-		b[i] = levels[i]
-	}
-	for ; i < len(a); i++ {
-		b[i] = levels[i+1]
-	}
-	if checkLevel(b) == -1 {
-		return nil
-	}
-	if problem != len(levels)-1 {
-		i := 0
-		for ; i < problem+1; i++ {
-			c[i] = levels[i]
-		}
-		for ; i < len(a); i++ {
-			c[i] = levels[i+1]
-		}
-		if checkLevel(c) == -1 {
-			return nil
-		}
-	}
+
 	return errors.New("unable to solve this level with retry")
+}
+
+// rebuildLevels assumes destination is a []int with size one less than source
+func rebuildLevel(source, dest *[]int, toSkip int) {
+	i := 0
+	for ; i < toSkip; i++ {
+		(*dest)[i] = (*source)[i]
+	}
+	for ; i < len(*dest); i++ {
+		(*dest)[i] = (*source)[i+1]
+	}
 }
 
 // checkLevel returns the index of the problem
