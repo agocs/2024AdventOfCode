@@ -58,7 +58,7 @@ func findArguments(b string) (int, int) {
 }
 
 func preProcess(r *regexp.Regexp) []string {
-	data, err := os.ReadFile("C:\\Users\\Chris\\AppData\\Local\\JetBrains\\GoLand2024.3\\demo\\LearnGoProject\\AdventOfCode\\Day3\\input.txt")
+	data, err := os.ReadFile("AdventOfCode/Day3/input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -97,7 +97,7 @@ func checkLevel(levels []int) int {
 func preProcess() [][]int {
 	levelsInput := make([][]int, 0)
 
-	file, err := os.Open("C:\\Users\\Chris\\AppData\\Local\\JetBrains\\GoLand2024.3\\demo\\LearnGoProject\\AdventOfCode\\Day2\\input.txt")
+	file, err := os.Open("AdventOfCode/Day2/input.txt")
 	defer file.Close()
 	if err != nil {
 		log.Fatal(err)

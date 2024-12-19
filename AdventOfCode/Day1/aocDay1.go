@@ -55,7 +55,7 @@ func preprocess() ([]int, []int) {
 	columnA := make([]int, 0)
 	columnB := make([]int, 0)
 
-	file, err := os.Open("C:\\Users\\Chris\\AppData\\Local\\JetBrains\\GoLand2024.3\\demo\\LearnGoProject\\AdventOfCode\\Day1\\input.txt")
+	file, err := os.Open("AdventOfCode/Day1/input.txt")
 	defer file.Close()
 	if err != nil {
 		log.Fatal(err)
