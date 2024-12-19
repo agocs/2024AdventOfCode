@@ -2,25 +2,50 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
 
 func main() {
 	lines := preProcess()
-
+	count := 0
 	for i, _ := range *lines {
 		for j, _ := range (*lines)[i] {
 			if (*lines)[i][j] == 'X' {
-				xmasMatch(lines, i, j)
+				count += xmasMatch(lines, i, j)
 			}
 		}
 	}
+	fmt.Println(count)
 
 }
 
-func xmasMatch(lines *[]string, i, j int) bool {
-	return false
+func xmasMatch(lines *[]string, i, j int) int {
+	matches := 0
+	possibleDirections := scanForM(lines, i, j)
+	for _, dir := range possibleDirections {
+		if xmasMatchInDirection(lines, i, j, dir) {
+			matches++
+		}
+	}
+	return matches
+}
+
+func xmasMatchInDirection(lines *[]string, i, j int, dir direction) bool {
+	xmas := "XMAS"
+	for n := range xmas {
+		iOffset := n * dir.iOffset
+		jOffset := n * dir.jOffset
+		if !isValid(lines, i, j, i+iOffset, j+jOffset) {
+			return false
+		}
+		charAtCoords := (*lines)[i+iOffset][j+jOffset]
+		if charAtCoords != xmas[n] {
+			return false
+		}
+	}
+	return true
 }
 
 type direction struct {
