@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	lines := preProcess()
+	lines := preProcess("AdventOfCode/Day4/input.txt")
 	count := 0
 	for i, _ := range *lines {
 		for j, _ := range (*lines)[i] {
@@ -18,6 +18,8 @@ func main() {
 		}
 	}
 	fmt.Println(count)
+
+	fmt.Println(countMatchingSubMatricies(lines))
 
 }
 
@@ -93,8 +95,8 @@ func isValid(lines *[]string, i, j, k, l int) bool {
 	return true
 }
 
-func preProcess() *[]string {
-	file, err := os.Open("C:\\Users\\Chris\\AppData\\Local\\JetBrains\\GoLand2024.3\\demo\\LearnGoProject\\AdventOfCode\\Day4\\input.txt")
+func preProcess(path string) *[]string {
+	file, err := os.Open(path)
 	defer file.Close()
 	if err != nil {
 		log.Fatal(err)
