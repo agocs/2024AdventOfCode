@@ -52,7 +52,7 @@ var identityX [][]uint8 = [][]uint8{
 	[]uint8{1, 0, 1},
 }
 
-// matrixMultIdentityX mutates the submatrix, multiplying it by
+// matrixMultIdentityX mutates the submatrix, multiplying each element by
 // 1 0 1
 // 0 1 0
 // 1 0 1
